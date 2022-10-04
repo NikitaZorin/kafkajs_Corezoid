@@ -14,7 +14,8 @@
   "dependencies": {
     "axios": "^0.27.2",
     "kafkajs": "^2.2.0",
-    "tslog": "^3.3.4"
+    "tslog": "^3.3.4",
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
