@@ -1,6 +1,6 @@
 import { Admin, ITopicConfig, Kafka, Partitioners } from 'kafkajs';
 import ProducerFactory from './kafka/producer';
-import { ConsumerFactory, corezoidConfig } from './kafka/consumer';
+import { ConsumerFactory } from './kafka/consumer';
 
 interface kafkaConfig {
   clientId: string;
@@ -79,10 +79,9 @@ export class KafkaFactory {
   async read(
     topic: string,
     consumerObj: consumerObj,
-    corezoidConfig: corezoidConfig
   ) {
       const consumer = new ConsumerFactory(this.kafka.consumer(consumerObj));
-      const result = await consumer.startBatchConsumer(topic, corezoidConfig);
+      const result = await consumer.startBatchConsumer(topic);
       return result;
   }
 
