@@ -18,6 +18,18 @@ class ConsumerFactory {
     this.consumer.disconnect()
   }
 
+  public sendToCorezoid(corezoidConfig: corezoidConfig) {
+    return new Promise(resolve => {
+      axios(corezoidConfig)
+          .then(function(response) {
+              resolve(response.data);
+          })
+          .catch(function(error) {
+              resolve(error);
+          });
+  });
+  }
+
   public async startBatchConsumer(topicName: string, corezoidConfig: corezoidConfig) {
     const topic: ConsumerSubscribeTopics = {
       topics: [topicName],
@@ -44,7 +56,8 @@ class ConsumerFactory {
             });
           }
           corezoidConfig.data.messages = requestData;
-          await axios(corezoidConfig);
+          const result = await this.sendToCorezoid(corezoidConfig)
+          console.log(result);
           this.shutdown();
         }
       })
