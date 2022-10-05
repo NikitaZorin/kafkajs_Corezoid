@@ -15,7 +15,7 @@ class ConsumerFactory {
   }
 
   async shutdown() {
-    await this.consumer.disconnect();
+    this.consumer.disconnect();
   }
 
   public sendToCorezoid(corezoidConfig: corezoidConfig) {
@@ -43,11 +43,11 @@ class ConsumerFactory {
 
       return new Promise(resolve => {
         this.consumer.run({
-          eachBatchAutoResolve: false,
+          eachBatchAutoResolve: true,
           eachBatch: async (eachBatchPayload: EachBatchPayload) => {
             const { batch } = eachBatchPayload;
             const requestData: object[] = [];
-            for (const message of batch.messages) {
+            batch.messages.forEach(async message => {
               const value = message.value ? message.value.toString() : null;
               requestData.push({
                 topic: batch.topic,
@@ -56,12 +56,12 @@ class ConsumerFactory {
                 message: value,
                 timestamp: message.timestamp
               });
-            }
+            });
   
             corezoidConfig.data.messages = requestData;
-            await this.sendToCorezoid(corezoidConfig);
-            await this.shutdown();
-            resolve("test");
+            // await this.sendToCorezoid(corezoidConfig);
+            this.shutdown();
+            resolve(requestData);
           }
         })
     });

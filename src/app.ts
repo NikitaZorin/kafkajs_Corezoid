@@ -82,7 +82,8 @@ export class KafkaFactory {
     corezoidConfig: corezoidConfig
   ) {
       const consumer = new ConsumerFactory(this.kafka.consumer(consumerObj));
-      await consumer.startBatchConsumer(topic, corezoidConfig);
+      const result = await consumer.startBatchConsumer(topic, corezoidConfig);
+      return result;
   }
 
   private createKafka(kafkaConfig: kafkaConfig): Kafka {
