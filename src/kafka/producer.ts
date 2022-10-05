@@ -33,23 +33,4 @@ export default class ProducerFactory {
       return error;
     }
   }
-
-  // public async sendBatch(messages: []): Promise<void> {
-  //   const kafkaMessages = messages.map((message) => {
-  //     return {
-  //       value: JSON.stringify(message),
-  //     };
-  //   });
-
-  //   const topicMessages: TopicMessages = {
-  //     topic: 'producer-topic',
-  //     messages: kafkaMessages,
-  //   };
-
-  //   const batch: ProducerBatch = {
-  //     topicMessages: [topicMessages],
-  //   };
-
-  //   await this.producer.sendBatch(batch);
-  // }
 }
