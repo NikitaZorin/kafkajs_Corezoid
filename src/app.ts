@@ -45,8 +45,8 @@ export class KafkaFactory {
       );
   
       await producer.start();
-      await producer.send(message, topic);
-      return {result: `Create message on topic - ${topic}`};
+      const result = await producer.send(message, topic);
+      return {result};
     }
   }
 

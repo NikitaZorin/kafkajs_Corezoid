@@ -39,13 +39,12 @@ class ConsumerFactory {
     try {
       await this.consumer.connect();
       await this.consumer.subscribe(topic);
-      this.consumer.run({
+      await this.consumer.run({
         eachBatchAutoResolve: false,
         eachBatch: async (eachBatchPayload: EachBatchPayload) => {
           const { batch } = eachBatchPayload;
           const requestData: object[] = [];
           for (const message of batch.messages) {
-            // JSON.parse(
             const value = message.value ? message.value.toString() : null;
             requestData.push({
               topic: batch.topic,
@@ -56,8 +55,7 @@ class ConsumerFactory {
             });
           }
           corezoidConfig.data.messages = requestData;
-          const result = await this.sendToCorezoid(corezoidConfig)
-          console.log(result);
+          await this.sendToCorezoid(corezoidConfig)
           this.shutdown();
         }
       })

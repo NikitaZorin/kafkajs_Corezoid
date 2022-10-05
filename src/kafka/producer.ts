@@ -27,8 +27,8 @@ export default class ProducerFactory {
       };
   
      const result = await this.producer.send(topicMessages);
-     console.log(result);
      this.shutdown();
+     return result;
     } catch (error) {
       return error;
     }
