@@ -14,8 +14,8 @@ class ConsumerFactory {
     this.consumer = consumer;
   }
 
-  private shutdown() {
-    this.consumer.disconnect()
+  async shutdown() {
+    await this.consumer.disconnect();
   }
 
   public sendToCorezoid(corezoidConfig: corezoidConfig) {
@@ -59,9 +59,9 @@ class ConsumerFactory {
             }
   
             corezoidConfig.data.messages = requestData;
-            await this.sendToCorezoid(corezoidConfig)
+            await this.sendToCorezoid(corezoidConfig);
+            await this.shutdown();
             resolve("test");
-            this.shutdown();
           }
         })
     });
