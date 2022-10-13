@@ -33,6 +33,7 @@ export class ConsumerFactory {
               batch.messages.forEach(message => {
                 const value = message.value ? message.value.toString() : null;
                 requestData.push({
+                  key: message.key?.toString(),
                   topic: batch.topic,
                   partion: batch.partition,
                   offset: message.offset,
