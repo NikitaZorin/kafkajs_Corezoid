@@ -1,4 +1,4 @@
-import { TopicMessages, Producer, ProducerBatch, Admin } from 'kafkajs';
+import { TopicMessages, Producer } from 'kafkajs';
 
 export default class ProducerFactory {
   producer: Producer;
@@ -8,22 +8,24 @@ export default class ProducerFactory {
   }
 
   private shutdown() {
-    this.producer.disconnect();
+    this.producer.disconnect(); 
   }
 
   async start(): Promise<void> {
     try {
-      await this.producer.connect()
+      await this.producer.connect();
     } catch (error) {
       console.log('Error connecting the producer: ', error)
     }
   }
 
-  async send(message: object, topic: string) {
+
+  async send(messages: {key: string, value: any}[], topic: string) {
     try {
       const topicMessages: TopicMessages = {
         topic: topic,
-        messages: [{ value: JSON.stringify(message) }],
+        messages: messages,
+        // messages: [{ value: JSON.stringify(message) }],
       };
   
      const result = await this.producer.send(topicMessages);

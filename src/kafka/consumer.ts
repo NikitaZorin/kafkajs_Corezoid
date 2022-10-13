@@ -1,10 +1,6 @@
-import { Consumer, ConsumerSubscribeTopics, EachBatchPayload, EachMessagePayload } from 'kafkajs';
+import { Consumer, ConsumerSubscribeTopics, EachBatchPayload } from 'kafkajs';
 
-interface corezoidConfig {
-  url: string;
-  method: string;
-  data: {messages: object[]};
-}
+
 
 export class ConsumerFactory {
   private consumer: Consumer;
@@ -16,18 +12,6 @@ export class ConsumerFactory {
   private shutdown() {
     this.consumer.disconnect();
   }
-
-  // public sendToCorezoid(corezoidConfig: corezoidConfig) {
-  //   return new Promise(resolve => {
-  //     axios(corezoidConfig)
-  //         .then(function(response) {
-  //             resolve(response.data);
-  //         })
-  //         .catch(function(error) {
-  //             resolve(error);
-  //         });
-  // });
-  // }
 
  public async startBatchConsumer(topicName: string) {
     const topic: ConsumerSubscribeTopics = {
@@ -57,7 +41,7 @@ export class ConsumerFactory {
                 });
               });
               resolve(requestData);
-              // this.shutdown();
+              this.shutdown();
             }
           });
     });

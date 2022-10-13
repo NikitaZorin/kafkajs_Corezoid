@@ -12,6 +12,8 @@ interface consumerObj {
   groupId: string;
 }
 
+
+
 interface topicObj {
   validateOnly: boolean | undefined;
   waitForLeaders: boolean | undefined;
@@ -32,7 +34,7 @@ export class KafkaFactory {
     this.admin.disconnect();
   }
 
-  async send(message: object | [], topic: string) {
+  async send(messages: {key: string, value: any}[], topic: string) {
 
     const listTopics = await this.getActualTopics();
     if(!listTopics.find(group => group == topic)) {
@@ -45,7 +47,7 @@ export class KafkaFactory {
       );
   
       await producer.start();
-      const result = await producer.send(message, topic);
+      const result = await producer.send(messages, topic);
       return {result};
     }
   }
@@ -80,9 +82,14 @@ export class KafkaFactory {
     topic: string,
     consumerObj: consumerObj,
   ) {
+    const listTopics = await this.getActualTopics();
+    if(!listTopics.find(group => group == topic)) {
+      return {result: 'Topic does not exist'};
+    } else {
       const consumer = new ConsumerFactory(this.kafka.consumer(consumerObj));
       const result = await consumer.startBatchConsumer(topic);
       return result;
+    }
   }
 
   private createKafka(kafkaConfig: kafkaConfig): Kafka {
